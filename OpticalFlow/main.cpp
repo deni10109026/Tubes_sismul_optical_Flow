@@ -86,3 +86,32 @@ int main(void)
 
 		 /* menjalakan Pyramidal Lucas Kanade Optical Flow */
 		cvCalcOpticalFlowPyrLK(frame1_1C, frame2_1C, pyramid1, pyramid2, frame1_features, frame2_features, number_of_features, optical_flow_window, 5, optical_flow_found_feature, optical_flow_feature_error, optical_flow_termination_criteria, 0 );
+		
+		/* membuat panah */
+		for(int i = 0; i < number_of_features; i++)
+		{
+			/* skip bila tidak ada feature */
+			if ( optical_flow_found_feature[i] == 0 ) continue;
+			int line_thickness; line_thickness = 1;
+			/* warna garis */
+			CvScalar line_color; line_color = CV_RGB(255,0,0);
+			/* menggambarkan panah */
+			CvPoint p,q;
+			p.x = (int) frame1_features[i].x;
+			p.y = (int) frame1_features[i].y;
+			q.x = (int) frame2_features[i].x;
+			q.y = (int) frame2_features[i].y;
+			double angle; angle = atan2( (double) p.y - q.y, (double) p.x - q.x );
+			double hypotenuse; hypotenuse = sqrt( square(p.y - q.y) + square(p.x - q.x) );
+			q.x = (int) (p.x - 3 * hypotenuse * cos(angle));
+			q.y = (int) (p.y - 3 * hypotenuse * sin(angle));
+			cvLine( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+			p.x = (int) (q.x + 9 * cos(angle + pi / 4));
+			p.y = (int) (q.y + 9 * sin(angle + pi / 4));
+			cvLine( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+			p.x = (int) (q.x + 9 * cos(angle - pi / 4));
+			p.y = (int) (q.y + 9 * sin(angle - pi / 4));
+			cvLine( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+		}
+		/* menampilkan gambar */
+		cvShowImage("Optical Flow", frame1);
