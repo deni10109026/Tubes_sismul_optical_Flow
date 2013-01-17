@@ -115,3 +115,10 @@ int main(void)
 		}
 		/* menampilkan gambar */
 		cvShowImage("Optical Flow", frame1);
+		
+			/* keluar */
+		int key_pressed;
+		key_pressed = cvWaitKey(10);
+		if (key_pressed == 27) break;
+		current_frame++;
+	}
