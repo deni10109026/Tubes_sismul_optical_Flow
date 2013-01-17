@@ -114,7 +114,7 @@ int main(void)
 			cvLine( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
 		}
 		/* menampilkan gambar */
-		//cvShowImage("Optical Flow", frame1);
+		cvShowImage("Optical Flow", frame1);
 		
 			/* keluar */
 		int key_pressed;
